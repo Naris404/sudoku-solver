@@ -6,15 +6,14 @@
 
 using namespace std;
 
-int grid[9][9];
-int counter;
+int grid[9][9], counter;
 clock_t start,stop;
 bool ask=true;
 char c;
 
-bool write_to_file(string name_of_file)
+
+void write_to_file(string name_of_file)
 {
-	bool ret;
 	fstream file;
 	file.open(name_of_file, (ios::out, ios::app));
 	if(file.good())
@@ -28,12 +27,10 @@ bool write_to_file(string name_of_file)
 			}
 			file<<endl;
 		}
-		ret = true;
 	}
-	else ret = false;
 	file.close();
-	return ret;
 }
+
 
 void make_grid(string name_of_file)
 {
@@ -54,36 +51,36 @@ void make_grid(string name_of_file)
 	file.close();
 }
 
+
 bool can_be(int y, int x, int n)
 {
 	bool canbe;
-	x--;
-	y--;
 	for(int i=0; i<9; i++)
 	{
-		if(grid[y][i] == n) // pozioma os
+		if(grid[y][i] == n) // horizontal axis
 		{
 			return false;
 		}
-		if(grid[i][x] == n) // pionowa os
+		if(grid[i][x] == n) // vertical axis
 		{
 			return false;
 		}
 	}
 
-	int x0 = floor(x/3)*3;
+	int x0 = floor(x/3)*3; // coordinates for left corner square (3x3) where is number
 	int y0 = floor(y/3)*3;
 
 	for(int k=0; k<3; k++)
 	{
 		for(int j=0; j<3; j++)
 		{
-			if(grid[y0+k][x0+j] == n)return false; // kwadrat 3x3
+			if(grid[y0+k][x0+j] == n) return false; // checking square 3x3
 		}
 	}
 
 	return true;
 }
+
 
 void solve()
 {
@@ -95,7 +92,7 @@ void solve()
 			{
 				for(int n=1; n<10; n++)
 				{
-					if(can_be(y+1,x+1,n))
+					if(can_be(y,x,n))
 					{
 						grid[y][x] = n;
 						solve();
@@ -114,22 +111,23 @@ void solve()
 		cout<<"Next solution (type \"a\" for all and \"e\" for exit):";
 		c = cin.get();
 	}
-	if(c == 'a')ask = false;
-	else if(c == 'e'){
-		cout<<"\nYou're sudoku has beend solved "<<counter<<" times."<<endl;
+	if(c == 'a') ask = false;
+	else if(c == 'e')
+	{
+		cout<<"\nYou're sudoku has been solved "<<counter<<" times."<<endl;
 		exit(0);
 	}
-	else start = clock();
+	start = clock();
 }
 
-int begin(string name_of_file)
+
+void begin(string name_of_file)
 {
 	make_grid(name_of_file);
 	start = clock();
 	solve();
-	cout<<"\nYou're sudoku has beend solved "<<counter<<" times."<<endl;
+	cout<<"\nYou're sudoku has been solved "<<counter<<" times."<<endl;
 }
-
 
 
 int main()
