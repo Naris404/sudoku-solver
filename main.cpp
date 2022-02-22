@@ -15,7 +15,7 @@ char c;
 void write_to_file(string name_of_file)
 {
 	fstream file;
-	file.open(name_of_file, (ios::out, ios::app));
+	file.open(name_of_file, (ios::app));
 	if(file.good())
 	{
 		file<<"\n[+] Sudoku number "<<counter+1<<" solved in "<<fixed<<(double)(stop-start)/CLOCKS_PER_SEC<<" seconds."<<endl;
@@ -44,7 +44,7 @@ void make_grid(string name_of_file)
 		while(getline(file, number, ','))
 		{
 			if(x == 9){x=0,y++;}
-		    grid[y][x] = stoi(number);
+		  grid[y][x] = stoi(number);
 			x++;
 		}
 	}
